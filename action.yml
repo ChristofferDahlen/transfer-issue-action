@@ -4,15 +4,18 @@ author: John Ouellet
 inputs:
   apply_label:
     description: A label to apply on the new issue in the format "LABEL:HEXCODE"
-    default: false
+    required: false
   create_stub:
     description: Create a stub issue with title and description in original repo
-    default: false
+    required: false
   debug:
     description: Enable debug output
-    default: false
-  router:
-    description: A label to repo routing in the form "LABEL:REPO"
+    required: false
+  req_regexp_match:
+    description: A regex that matches the the body of a issue comment
+    required: false
+  target_repo:
+    description: The name of the destination repo
     required: true
   token:
     description: The GitHub Personal Access Token

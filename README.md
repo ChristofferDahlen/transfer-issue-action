@@ -1,6 +1,13 @@
+
+# Changes:
+
+Forked from https://github.com/lando/transfer-issue-action
+
+Change for using a label to matching the body with a regexp 
+
 # Transfer Issue GitHub Action
 
-A GitHub Action for transferring issues between GitHub repos _within the same organization_ when they are labeled in a certain way.
+A GitHub Action for transferring issues between GitHub repos _within the same organization_ when the body of a issue is matched against a regexp.
 
 It also has the ability to do the following:
 
@@ -12,7 +19,7 @@ It also has the ability to do the following:
   Your original issue has been moved to [https://github.com/lando/transfer-issue-action/issues/53](https://github.com/lando/transfer-issue-action/issues/53)
   ```
 
-* Apply labels to the transffered issue.
+* Apply labels to the transferred issue.
 
 ## Events
 
@@ -22,18 +29,19 @@ This action was designed particularly for the below event but may work for other
 on:
   issues:
     types:
-      - labeled
+      - opened
 ```
 
 ## Inputs
 
-Input | Description | Required | Default |
-----------|-------------|:----------:|:-------:|
-| `token` | A GitHub [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) created with repo access | yes | - |
-| `router` | A label to repo routing in the form "LABEL:REPO" | yes* |-|
-| `apply_label` | A label to apply on the new issue in the format "LABEL:HEXCODE" | yes* |-|
-| `create_stub` | Create a stub issue with title and description in original repo | no | `false` |
-| `debug` | Enable debug output | no | `false` |
+Input | Description                                                                                                                                                                | Required | Default |
+----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------:|:-------:|
+| `token` | A GitHub [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) created with repo access |   yes    | - |
+| `target_repo` | the name of the traget repository                                                                                                                                          |   yes    |-|
+| `req_regexp_match` | A Regular expression                                                                                                                                                       |   yes*   |-|
+| `apply_label` | A label to apply on the new issue in the format "LABEL:HEXCODE"                                                                                                            |   yes*   |-|
+| `create_stub` | Create a stub issue with title and description in original repo                                                                                                            |    no    | `false` |
+| `debug` | Enable debug output                                                                                                                                                        |    no    | `false` |
 
 ### Input Notes
 
@@ -54,7 +62,7 @@ When an issue in the repo which implements this action is tagged with `holla` it
 
 ```yaml
 - name: Transfer Issue & Create Stub
-  uses: lando/transfer-issue-action@v2
+  uses: ChristofferDahlen/transfer-issue-action@v2
   with:
     token: ${{ secrets.TRANSFER_ISSUE_TOKEN }}
     router: holla:atcha
@@ -69,7 +77,8 @@ Does the same as above but when the new issue is created it applies the `Needs T
   uses: lando/transfer-issue-action@v2
   with:
     token: ${{ secrets.TRANSFER_ISSUE_TOKEN }}
-    router: holla:atcha
+    target_repo: testRepo
+    req_regexp_match: "Move\sTest(Repo)?"
     apply_label: "Needs Triage:FF0000"
     create_stub: true
 ```
