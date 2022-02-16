@@ -4,7 +4,7 @@ author: John Ouellet
 inputs:
   apply_label:
     description: A label to apply on the new issue in the format "LABEL:HEXCODE"
-    required: false
+    default: false
   create_stub:
     description: Create a stub issue with title and description in original repo
     required: false
